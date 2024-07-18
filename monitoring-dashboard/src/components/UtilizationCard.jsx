@@ -1,12 +1,18 @@
-/* eslint-disable react/prop-types */
-export default function UtilizationCard({value, name}) {
-    return <div className="relative overflow-hidden bg-gray-900 w-[150px] border-2 border-gray-900 p-3 py-2 rounded-md shadow-xl">
-        <div className="text-gray-50">
-            <h1 className="text-xl text-gray-200 opacity-80">{value.toFixed(2)} %</h1>
-            <p className="font-xs capitalize font-medium">{name}</p>
-        </div>
-        <div className="absolute top-2 -right-2 opacity-50">
-            <img src="/ram.jpg" className="inline-block w-14 h-14" />
-        </div>
+/* eslint-disable react/prop-types */ import { GiSpanner } from "react-icons/gi";
+export default function UtilizationCard({ value, name }) {
+  return (
+    <div className="bg-gray-900 w-full h-[200px] sm:w-[250px]  sm:h-[150px] border-2 border-gray-900 rounded-md shadow-xl">
+      <div className="flex justify-between items-center bg-black/50 text-gray-100 p-3">
+        <div className="text-xs"><span className="font-bold text-sm">{name}</span> Summary - Now</div>
+        <p>
+          <GiSpanner className="text-white" />
+        </p>
+      </div>
+      <div className="flex items-center pt-12 sm:pt-7 justify-center">
+        <h1 className="text-3xl xl:text-5xl text-blue-400/80">
+          {value.toFixed(2)} %
+        </h1>
+      </div>
     </div>
+  );
 }

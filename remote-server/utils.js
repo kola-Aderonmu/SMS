@@ -1,5 +1,5 @@
 import os from 'os';
-import fs from 'fs';
+import osUtils from "os-utils";
 
 // Function to get the system IP address
 export function getIPAddress() {
@@ -19,5 +19,18 @@ export function bytesToGB(bytes) {
   return bytes / (1024 ** 3);
 }
 
-// Function to read cron job logs (moved to routes/usage.js)
-// Function to update Prometheus metrics (moved to routes/metrics.js)
+// Promisify the cpuUsage function
+export const cpuUsageAsync = () => new Promise((resolve, reject) => {
+  osUtils.cpuUsage((value) => {
+    if (value !== undefined) {
+      resolve(value);
+    } else {
+      reject(new Error('Failed to retrieve CPU usage'));
+    }
+  });
+});
+
+export async function getCurrentCpuUsage() {
+  const currentCpuUsage = await cpuUsageAsync();
+  return parseFloat((currentCpuUsage * 100).toFixed(2));
+}

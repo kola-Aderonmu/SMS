@@ -1,10 +1,11 @@
 import osUtils from 'os-utils';
 import fs from 'fs';
+import { getCurrentCpuUsage } from './utils.js';
 
 const INTERVAL_DURATION = 10 * 1000; // Interval in milliseconds (e.g., every 10 seconds)
 const DATA_RETENTION_PERIOD = 23 * 60 * 60 * 1000; // 23 hours in milliseconds
 const MAX_ENTRIES_TO_KEEP = 20;
-const DATA_FILE = 'cpu_utilization_intervals.json';
+const DATA_FILE = 'cpu_interval.json';
 
 let cpuUsageData = [];
 
@@ -36,9 +37,9 @@ function readCpuUtilizationFromFile() {
 }
 
 // Function to capture CPU utilization at intervals
-function captureCpuUsage() {
-  osUtils.cpuUsage((currentCpuUsage) => {
-    cpuUsageData.push({ timestamp: Date.now(), utilization: parseFloat((currentCpuUsage * 100).toFixed(2)) }); // Convert to percentage
+async function captureCpuUsage() {
+  const currentCpuUsage = await getCurrentCpuUsage();
+  cpuUsageData.push({ timestamp: Date.now(), utilization: currentCpuUsage }); // Convert to percentage
 
     // Write to file periodically or conditionally
     if (cpuUsageData.length > MAX_ENTRIES_TO_KEEP) {
@@ -46,7 +47,7 @@ function captureCpuUsage() {
     }
 
     writeCpuUtilizationToFile();
-  });
+
 }
 
 // Function to clean up old data periodically
