@@ -3,9 +3,9 @@ import { Progress } from "@material-tailwind/react";
 
 export function ProgressBar({ label, value, percentage }) {
   return (
-    <div className="">
-      <div className="flex justify-between items-center gap-1 px-3 text-xs">
-        <h4 className="text-sm">{label}</h4>
+    <div className=" w-99 ml-3 h-auto">
+      <div className="flex justify-between items-center gap-1 px-2 text-xs ">
+        <h4 className="text-sm font-black">{label}</h4>
         <p className="font-bold">{value.toFixed(2)} GB</p>
       </div>
       <Progress

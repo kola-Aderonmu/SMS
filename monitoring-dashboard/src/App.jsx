@@ -1,4 +1,5 @@
 import Dashboard from "./components/Dashboard";
+import Navbar from "./components/Navbar";
 import ServerMetricsProvider from "./lib/ServerMetricsContext";
 import SummaryMetricsProvider from "./lib/SummaryMetricsContext";
 
@@ -7,6 +8,7 @@ const App = () => {
     <ServerMetricsProvider>
       <SummaryMetricsProvider>
         <div className="font-sans bg-black">
+          <Navbar />
           <Dashboard />
         </div>
       </SummaryMetricsProvider>
