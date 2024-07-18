@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { baseUrl } from '../lib/utils';
 
 const apiClient = axios.create({
-  baseURL: 'http://127.0.0.1:3000', // Replace with your backend URL
+  baseURL: baseUrl, // Replace with your backend URL
   headers: {
     'Content-Type': 'application/json',
   },

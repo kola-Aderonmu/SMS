@@ -1,6 +1,8 @@
 /* eslint-disable react/prop-types */
 
+import axios from 'axios';
 import { createContext, useState, useEffect } from 'react';
+import { baseUrl } from './utils';
 
 export const ServerMetricsContext = createContext();
 
@@ -10,8 +12,8 @@ const ServerMetricsProvider = ({ children }) => {
   useEffect(() => {
     const fetchMetrics = async () => {
       try {
-        const response = await fetch('http://localhost:3000/usage');
-        const data = await response.json();
+        const response = await axios.get(baseUrl+'/usage');
+        const data = response.data;
         setServerMetrics(data);
       } catch (error) {
         console.error('Error fetching server metrics:', error);
@@ -20,7 +22,7 @@ const ServerMetricsProvider = ({ children }) => {
 
     fetchMetrics(); // Initial fetch
 
-    const interval = setInterval(fetchMetrics, 60000); // Fetch metrics every minute
+    const interval = setInterval(fetchMetrics, 60000); // Fetch metrics every 100ms
 
     return () => clearInterval(interval); // Cleanup on unmount
   }, []);
