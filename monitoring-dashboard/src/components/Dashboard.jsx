@@ -18,12 +18,12 @@ const Dashboard = () => {
     // totalMemory,
     // freeMemory,
     // loadAverage,
-    memory
+    memory,
   } = serverMetrics;
   console.log(serverMetrics);
   return (
-    <div className="p-8 bg-white shadow rounded-lg">
-      <h1 className="text-2xl font-bold mb-4">Server Metrics Dashboard</h1>
+    <div className="p-8 bg-white shadow rounded-lg border-red-500">
+      <h1 className="text-2xl font-bold mb-4"></h1>
 
       {/* <div className="mb-4">
         <h2 className="text-xl font-semibold">System Information</h2>
@@ -51,9 +51,9 @@ const Dashboard = () => {
         </div>
         {/* RAM disposition */}
         <div className="flex gap-3 flex-col w-full">
-         {
-          memory.map((mem, index) => <ProgressBar key={index} {...mem} />)
-         }
+          {memory.map((mem, index) => (
+            <ProgressBar key={index} {...mem} />
+          ))}
         </div>
       </div>
 

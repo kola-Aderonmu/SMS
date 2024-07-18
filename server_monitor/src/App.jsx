@@ -23,6 +23,7 @@ function App() {
         >
           &#9776;
         </div>
+        //! The header will carry the statistic
         <div className="icon flex flex-col items-center mb-4 text-xs">
           <i className="fa-solid fa-house text-xl"></i>
           <span

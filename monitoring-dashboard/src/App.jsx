@@ -1,15 +1,16 @@
-import Dashboard from './components/Dashboard';
-import ServerMetricsProvider from './lib/ServerMetricsContext';
+import Dashboard from "./components/Dashboard";
+import NavBar from "./components/NavBar";
+import ServerMetricsProvider from "./lib/ServerMetricsContext";
 
 const App = () => {
   return (
     <ServerMetricsProvider>
-      <div className="font-sans ">
-      <Dashboard />
+      <div className="font-Inter ">
+        <NavBar />
+        <Dashboard />
       </div>
     </ServerMetricsProvider>
   );
 };
 
 export default App;
-
