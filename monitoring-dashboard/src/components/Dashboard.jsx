@@ -12,7 +12,7 @@ const Dashboard = () => {
   if (!serverMetrics) {
     return (
       <div className="min-h-screen bg-black/80 text-gray-50 min-w-full flex items-center justify-center flex-col gap-5 overflow-hidden">
-        <Spinner className="h-12 w-12 text-gray-900/50" />
+        <Spinner className="h-12 w-12 text-green-700/90" />
         <p className="text-xs py-3 tracking-widest italic">
           Your Server metrics is loading...
         </p>
