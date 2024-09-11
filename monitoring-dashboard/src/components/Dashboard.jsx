@@ -31,15 +31,11 @@ const Dashboard = () => {
       {/* First part */}
       <div className="flex flex-col md:flex-row justify-start md:items-center gap-3 p-3">
         <div className="w-full lg:w-1/2">
-          {/* <div className="flex items-center justify-between px-3 gap-2">
-            <h1 className="text-white/80 font-thin italic">Summary</h1>
-          </div> */}
-          {/* Utilization RAM, Disk and CPU */}
           <OverallUtilization />
         </div>
 
         {/* RAM disposition */}
-        <div className="flex gap-3 flex-col w-full lg:w-1/2 ">
+        <div className="flex gap-3 flex-col w-full lg:w-1/2 shadow-xl">
           <div className="flex items-center justify-between px-2 gap-2">
             <h3 className="text-white/80 italic tracking-widest">RAM</h3>
           </div>
@@ -54,11 +50,11 @@ const Dashboard = () => {
       <br />
       {/* Processor Utilization & Disk throughput */}
       <div className="flex gap-5 flex-col lg:flex-row">
-        <div className="w-full md:w-1/2">
+        <div className="w-20 md:w-1/2">
           <CPUUtilization />
         </div>
 
-        <div className="w-full md:w-1/2">
+        <div className="w-20 md:w-1/2">
           <DiskThroughput />
         </div>
       </div>

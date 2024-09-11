@@ -3,7 +3,40 @@
 @tailwind utilities;
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: content-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: content-box;
+}
+
+@keyframes close-eyes {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  } /* Simulate eyes closing */
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes look-around {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-10px);
+  }
+  75% {
+    transform: translateX(10px);
+  }
+}
+
+.animate-close-eyes {
+  animation: close-eyes 1s infinite;
+}
+
+.animate-look-around {
+  animation: look-around 1s infinite;
 }

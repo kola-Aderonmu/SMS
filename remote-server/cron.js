@@ -1,51 +1,50 @@
+import chokidar from "chokidar";
 import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
-// Function to read cron job logs
-export function readCronJobLogs() {
-  try {
-    const logFile = "cronjob.log";
-    if (fs.existsSync(logFile)) {
-      const logs = fs.readFileSync(logFile, "utf8").split("\n");
-      // Process logs
-      return logs;
-    } else {
-      console.log("Cron job log file does not exist.");
-      return [];
-    }
-  } catch (error) {
-    console.error("Error reading cron job logs:", error);
-    return [];
-  }
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const logFilePath = "C:\\monitor\\file_operations.log";
+
+// Watch the specific file for changes
+const watcher = chokidar.watch(logFilePath, {
+  persistent: true,
+});
+
+// Function to read the latest log entries
+function readLatestLogs(numLines = 10) {
+  const content = fs.readFileSync(logFilePath, "utf8");
+  const lines = content.split("\n").filter(Boolean);
+  return lines.slice(-numLines);
 }
 
-// Function to read cron job logs
+// Set up WebSocket connection (assuming you're using socket.io in your server)
+export function setupWebSocket(io) {
+  watcher.on("change", (path) => {
+    const latestLogs = readLatestLogs();
+    io.emit("logUpdate", latestLogs);
+  });
+}
+
+// Implement your cron job logic here
 export function fetchCronJobs() {
+  // Implementation of fetchCronJobs
+  // For example:
+  return [
+    { id: 1, name: "Daily Backup", schedule: "0 0 * * *" },
+    { id: 2, name: "Weekly Report", schedule: "0 0 * * 0" },
+  ];
+}
+
+// New function to get the latest logs
+export function getLatestLogs(req, res) {
   try {
-    const logFile = "cronjob.log";
-    if (fs.existsSync(logFile)) {
-      const logs = fs.readFileSync(logFile, "utf8").split("\n");
-      const cronJobs = [];
-      logs.forEach((log) => {
-        if (log.trim() !== "") {
-          const [name, startTime, endTime] = log.split(",");
-          const duration = (new Date(endTime) - new Date(startTime)) / 1000; // Duration in seconds
-          const status = index % 2 === 0 ? 200 : 500;
-          cronJobs.push({
-            name: name,
-            startTime: startTime,
-            endTime: endTime,
-            duration: duration,
-            status: status,
-          });
-        }
-      });
-      return cronJobs;
-    } else {
-      console.log("Cron job log file does not exist.");
-      return [];
-    }
+    const latestLogs = readLatestLogs();
+    res.json(latestLogs);
   } catch (error) {
-    console.error("Error reading cron job logs:", error);
-    return [];
+    console.error("Error reading log file:", error);
+    res.status(500).send("Error reading log file");
   }
 }

@@ -1,14 +1,28 @@
 import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
+import axios from "axios";
 
 const CrontabProcess = () => {
   const [logs, setLogs] = useState([]);
 
+  // Fetch historical logs on mount
   useEffect(() => {
+    const fetchHistoricalLogs = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/usage/logs");
+        setLogs(response.data);
+      } catch (error) {
+        console.error("Error fetching historical logs:", error);
+      }
+    };
+
+    fetchHistoricalLogs();
+
+    // Set up real-time updates
     const socket = io("http://localhost:5000");
 
-    socket.on("update", (data) => {
-      setLogs(data);
+    socket.on("update", (newLog) => {
+      setLogs((prevLogs) => [...newLog, ...prevLogs]); // Prepend new log entries
     });
 
     return () => socket.disconnect(); // Cleanup on unmount

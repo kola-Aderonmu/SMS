@@ -1,5 +1,3 @@
-#Create the Python Script for Monitoring File Operations
-
 import os
 import time
 import logging
@@ -8,21 +6,12 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
 # Directory to monitor
-DIRECTORY_TO_MONITOR = "C:\\monitor" 
+DIRECTORY_TO_MONITOR = "C:\\monitor"  # Change this to the directory you want to monitor
 LOG_FILE = os.path.join(DIRECTORY_TO_MONITOR, "file_operations.log")
 
 # Create the directory if it doesn't exist
 if not os.path.exists(DIRECTORY_TO_MONITOR):
     os.makedirs(DIRECTORY_TO_MONITOR)
-    print(f"Created directory successfully!: {DIRECTORY_TO_MONITOR}")
-
-# Create the log file if it doesn't exist
-if not os.path.exists(LOG_FILE):
-    with open(LOG_FILE, 'w') as log_file:
-        pass  # Just create the empty file
-    print(f"Created log file successfully!: {LOG_FILE}")
-else:
-    print(f"Log file already exists!: {LOG_FILE}")
 
 class FileOperationEventHandler(FileSystemEventHandler):
     def on_any_event(self, event):
@@ -56,8 +45,6 @@ class FileOperationEventHandler(FileSystemEventHandler):
         with open(LOG_FILE, 'a') as log_file:
             log_file.write(json.dumps(log_entry) + "\n")
 
-        print(f"Logged: {log_entry}")  # Print to console for debugging
-
         # Simulate some operation duration
         time.sleep(1)  # Simulate duration
         end_time = time.time()
@@ -69,8 +56,6 @@ class FileOperationEventHandler(FileSystemEventHandler):
         with open(LOG_FILE, 'a') as log_file:
             log_file.write(json.dumps(log_entry) + "\n")
 
-        print(f"Updated log: {log_entry}")  # Print to console for debugging
-
 if __name__ == "__main__":
     logging.basicConfig(filename=LOG_FILE, level=logging.INFO, format='%(asctime)s - %(message)s')
     
@@ -78,12 +63,13 @@ if __name__ == "__main__":
     observer = Observer()
     observer.schedule(event_handler, DIRECTORY_TO_MONITOR, recursive=True)
     observer.start()
-    print("Monitoring started. Press Ctrl+C to stop.")
+    print(f"Started monitoring directory: {DIRECTORY_TO_MONITOR}\n\n")
+    print("Monitoring...")
+
     try:
         while True:
             time.sleep(1)
     except KeyboardInterrupt:
         observer.stop()
-        print("Monitoring stopped.")
     observer.join()
-
+    print(f"Stopped monitoring directory: {DIRECTORY_TO_MONITOR}")

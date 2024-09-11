@@ -56,7 +56,7 @@ export default function DiskThroughput() {
   } = disk;
 
   return (
-    <div className="flex flex-col shadow-2xl border-dotted p-4 bg-blue-800 rounded-lg ml-4">
+    <div className="flex flex-col shadow-2xl border-dotted p-2 bg-blue-800 rounded-lg ml-4">
       <div className="flex items-center justify-between px-3 gap-2">
         <h1 className="text-white/80">Disk in Use</h1>
         <p className="text-xs font-light">{name}</p>

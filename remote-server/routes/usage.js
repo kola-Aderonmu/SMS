@@ -5,6 +5,8 @@ import pidusage from "pidusage";
 import osUtils from "os-utils";
 import psList from "ps-list";
 import NodeCache from "node-cache";
+import { exec } from "child_process";
+import { getLatestLogs } from "../cron.js";
 
 // Helper functions (e.g., getIPAddress, bytesToGB, readCronJobLogs, updateMetrics, etc.)
 import { getIPAddress, bytesToGB, getCurrentCpuUsage } from "../utils.js";
@@ -13,6 +15,34 @@ import { getCpuUtilizationIntervals } from "../cpu.js";
 
 const router = express.Router();
 const cache = new NodeCache({ stdTTL: 60 }); // Cache for 60 seconds
+
+// Endpoint to get connected nodes (MAC addresses)
+router.get("/connected-nodes", (req, res) => {
+  exec("arp -a", (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error executing arp command: ${error}`);
+      return res
+        .status(500)
+        .json({ message: "Error fetching connected nodes" });
+    }
+
+    const macAddresses = new Set();
+    const lines = stdout.split("\n");
+
+    lines.forEach((line) => {
+      // Parse each line of the output to find MAC addresses (usually the third column)
+      const match = line.match(/([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})/);
+      if (match) {
+        macAddresses.add(match[0]);
+      }
+    });
+
+    res.json({ connected_nodes: macAddresses.size });
+  });
+});
+
+// End point to get Logs
+router.get("/logs", getLatestLogs);
 
 // Endpoint to get CPU data
 router.get("/cpu", async (req, res) => {
@@ -52,10 +82,10 @@ router.get("/disk", async (req, res) => {
   } = diskLayout[0];
 
   const { fs, used, available, use, mount, rw } = diskInfo[0];
-  const diskUsage =  [
+  const diskUsage = [
     { name: "used", value: parseFloat(bytesToGB(used).toFixed(2)) },
     { name: "Available", value: parseFloat(bytesToGB(available).toFixed(2)) },
-    { name: "Total", value: parseFloat(bytesToGB(size).toFixed(2)) }
+    { name: "Total", value: parseFloat(bytesToGB(size).toFixed(2)) },
   ];
 
   const data = {
@@ -82,9 +112,8 @@ router.get("/disk", async (req, res) => {
     use: use,
     mount,
     rw,
-    diskUsage
+    diskUsage,
   };
-
 
   try {
     res.json(data);
