@@ -6,7 +6,7 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
 # Directory to monitor
-DIRECTORY_TO_MONITOR = "C:\\monitor"  # Change this to the directory you want to monitor
+DIRECTORY_TO_MONITOR = "C:\\monitor"  # directory to monitor
 LOG_FILE = os.path.join(DIRECTORY_TO_MONITOR, "file_operations.log")
 
 # Create the directory if it doesn't exist
