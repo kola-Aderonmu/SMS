@@ -20,7 +20,7 @@ function readLatestLogs(numLines = 10) {
   return lines.slice(-numLines);
 }
 
-// Set up WebSocket connection (assuming you're using socket.io in your server)
+// Set up WebSocket connection 
 export function setupWebSocket(io) {
   watcher.on("change", (path) => {
     const latestLogs = readLatestLogs();
